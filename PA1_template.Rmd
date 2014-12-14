@@ -88,88 +88,36 @@ The mean and median of the total number of steps taken per day became equal comp
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-### First, formating and including additional column in imputed dataset
+### First, formating imputed dataset to include day and week values and load create panels
 ```{r}
 data2$date <- as.Date(data2$date)
-data2$week <- weekdays(data2$date)
+data2$day <- weekdays(data2$date)
+data2$week[(data2$day == "Sunday" | data2$day == "Saturday")] <- "weekend"
+data2$week[!(data2$day == "Sunday" | data2$day == "Saturday")] <- "weekday"
+
 ```
 
 ### Second, split data into weekend and weekday datasets
 ```{r}
-dataWeekends <- data2[(data2$week == "Saturday" | data2$week == "Sunday"),]
-dataWeekdays <- data2[!(data2$week == "Saturday" | data2$week == "Sunday"),]
+dataWeekends <- data2[(data2$day == "Saturday" | data2$day == "Sunday"),]
+dataWeekdays <- data2[!(data2$day == "Saturday" | data2$day == "Sunday"),]
 ```
 
 ### Third, examine the differences between weekend and weekday datasets
-
-For weekend first:
-
-Total number of steps taken per day:
-```{r fig.height = 7}
-dataSum <- with(dataWeekends, tapply(steps, date, sum))
-hist(dataSum, main = "Histogram on the total number of steps taken per day", xlab = "", col = "green", border = "blue", labels = T)
-```
-
-
-Mean number of steps taken per day:
 ```{r}
-mean(dataSum, na.rm = T)
+dataAvgWE <- with(dataWeekends, tapply(steps, interval, mean, na.rm = T))
+dataAvgWD <- with(dataWeekdays, tapply(steps, interval, mean, na.rm = T))
+
+par(mfrow = c(2,1))
+plot(dataAvgWE, type = "l", xlab = "", ylab = "", col = "blue")
+
+plot(dataAvgWD, type = "l", xlab = "", ylab = "", col = "red")
+
+
 ```
 
-Median number of steps taken per day:
-```{r}
-median(dataSum, na.rm = T)
-```
-
-Time series plot:
-```{r}
-dataAvgIntv <- with(dataWeekends, tapply(steps, interval, mean))
-plot(dataAvgIntv, type = "l", xlab = "Index of 5-minute intervals", ylab = "Avg no. of steps taken, avg-ed across all days", main = "Time series plot of 5-minute interval", col = "blue")
-```
-
-The 5-minute interval with the most number of steps averaged across all days is:
-```{r}
-names(dataAvgIntv[dataAvgIntv == max(dataAvgIntv)])
-```
-
-
-Next, for weekday:
-
-Total number of steps taken per day:
-```{r fig.height = 7}
-dataSum <- with(dataWeekdays, tapply(steps, date, sum))
-hist(dataSum, main = "Histogram on the total number of steps taken per day", xlab = "", col = "red", border = "pink", labels = T)
-```
-
-
-Mean number of steps taken per day:
-```{r}
-mean(dataSum, na.rm = T)
-```
-
-Median number of steps taken per day:
-```{r}
-median(dataSum, na.rm = T)
-```
-
-Time series plot:
-```{r}
-dataAvgIntv <- with(dataWeekdays, tapply(steps, interval, mean, na.rm = T))
-plot(dataAvgIntv, type = "l", xlab = "Index of 5-minute intervals", ylab = "Avg no. of steps taken, avg-ed across all days", main = "Time series plot of 5-minute interval", col = "red")
-```
-
-The 5-minute interval with the most number of steps averaged across all days is:
-```{r}
-names(dataAvgIntv[dataAvgIntv == max(dataAvgIntv)])
-```
-
-
-### Observations:
-1. The distribution of the total number of steps per weekday was more normally distributed compared to that of weekends. 
-2. More steps were recorded during weekends than weekdays when comparing the mean and median of weekends and weekdays.
-3. Most steps were recorded at 9.15 am during weekends while that of weekdays is 8.35 am.
-4. The histogram and times series plot of weekdays resemble the overall plots more than weekends. This might not be surprising since the data has not yet been normalized.
-
+### Observation:
+Steps taken in weekends are mor distributed than that in weekdays.
 
 
 
