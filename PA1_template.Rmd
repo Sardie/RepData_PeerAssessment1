@@ -116,7 +116,7 @@ plot(dataAvgWD, type = "l", xlab = "", ylab = "", col = "red", main = "weekday")
 ```
 
 ### Observation:
-Steps taken in weekends are more broadly distributed than that in weekdays.
+Steps taken during weekends are more broadly distributed than that during weekdays.
 
 
 ---------

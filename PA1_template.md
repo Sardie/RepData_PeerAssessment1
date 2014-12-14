@@ -154,7 +154,7 @@ plot(dataAvgWD, type = "l", xlab = "", ylab = "", col = "red", main = "weekday")
 ![](./PA1_template_files/figure-html/unnamed-chunk-14-1.png) 
 
 ### Observation:
-Steps taken in weekends are more broadly distributed than that in weekdays.
+Steps taken during weekends are more broadly distributed than that during weekdays.
 
 
 ---------
