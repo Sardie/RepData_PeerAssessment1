@@ -108,18 +108,16 @@ dataWeekdays <- data2[!(data2$day == "Saturday" | data2$day == "Sunday"),]
 dataAvgWE <- with(dataWeekends, tapply(steps, interval, mean, na.rm = T))
 dataAvgWD <- with(dataWeekdays, tapply(steps, interval, mean, na.rm = T))
 
-par(mfrow = c(2,1))
-plot(dataAvgWE, type = "l", xlab = "", ylab = "", col = "blue")
-
-plot(dataAvgWD, type = "l", xlab = "", ylab = "", col = "red")
+par(mfrow = c(2,1), mar= c(0,0,0,0))
+plot(dataAvgWE, type = "l", xlab = "", ylab = "", col = "blue", main = "weekend")
+plot(dataAvgWD, type = "l", xlab = "", ylab = "", col = "red", main = "weekday")
 
 
 ```
 
 ### Observation:
-Steps taken in weekends are mor distributed than that in weekdays.
+Steps taken in weekends are more broadly distributed than that in weekdays.
 
 
-
-
+---------
 
